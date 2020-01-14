@@ -26,24 +26,66 @@ func main() {
 		log.Fatal(err)
 	}
 
-	sg, err := cs.Discovery().ServerGroups()
+	sg, sr, err := cs.Discovery().ServerGroupsAndResources()
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	fmt.Println(sg.Groups)
-	fmt.Println(sg.SwaggerDoc())
-	fmt.Println(sg)
-
-	versionInfo, err := cs.ServerVersion()
+	output, err := yaml.Marshal(&sr)
 	if err != nil {
 		log.Fatalln(err)
 	}
-	fmt.Println(versionInfo.String())
-	fmt.Println(versionInfo.Platform)
-
-	output, err := yaml.Marshal(&sg)
 	fmt.Println(string(output))
+
+	for i := range sr {
+		sriy, err := yaml.Marshal(&sr[i])
+		if err != nil {
+			log.Fatalln(err)
+		}
+		fmt.
+			Printf(
+				"\n-------------------------------------------\n%d:\n%s",
+				i,
+				sriy,
+			)
+
+	}
+	for i := range sg {
+		sgiy, err := yaml.Marshal(&sg[i])
+		if err != nil {
+			log.Fatalln(err)
+		}
+		fmt.
+			Printf(
+				"\n-------------------------------------------\n%d:\n%s",
+				i,
+				sgiy,
+			)
+
+	}
+
+	fmt.Printf("Server Groups: %d\n", len(sg))
+	fmt.Printf("Server Resources: %d\n", len(sr))
+	// fmt.Println(yaml.Marshal(sr))
+
+	// sg, err := cs.Discovery().ServerGroups()
+	// if err != nil {
+	// 	log.Fatal(err)
+	// }
+
+	// fmt.Println(sg.Groups)
+	// fmt.Println(sg.SwaggerDoc())
+	// fmt.Println(sg)
+
+	// versionInfo, err := cs.ServerVersion()
+	// if err != nil {
+	// 	log.Fatalln(err)
+	// }
+	// fmt.Println(versionInfo.String())
+	// fmt.Println(versionInfo.Platform)
+
+	// output, err := yaml.Marshal(&sg)
+	// fmt.Println(string(output))
 	// csDiscovery, err := cs.Discovery().OpenAPISchema()
 	// if err != nil {
 	// 	log.Fatalln(err)
@@ -66,7 +108,8 @@ func Client() (*kubernetes.Clientset, error) {
 
 	// manually use ~/.kube/config for now
 	kubeConfigFilePath := filepath.Join(os.Getenv("HOME"), ".kube", "config")
-	fmt.Println(kubeConfigFilePath)
+	// fmt.Println(kubeConfigFilePath)
+	fmt.Printf("\n\nKubeConfig Path: %s\n\n", kubeConfigFilePath)
 
 	kubeConfigFile, err := ioutil.ReadFile(kubeConfigFilePath)
 	if err != nil {
