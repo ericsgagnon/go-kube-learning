@@ -13,6 +13,7 @@ require (
 	golang.org/x/net v0.0.0-20191209160850-c0dbc17a3553 // indirect
 	gopkg.in/validator.v2 v2.0.0-20191107172027-c3144fdedc21 // indirect
 	gopkg.in/yaml.v2 v2.2.7
+	k8s.io/api v0.17.0
 	k8s.io/apimachinery v0.17.0
 	k8s.io/client-go v0.17.0
 )

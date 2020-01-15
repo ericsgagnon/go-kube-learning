@@ -8,8 +8,8 @@ import (
 	"path/filepath"
 
 	// _ "k8s.io/client-go/plugin/pkg/client/auth"
-
 	"gopkg.in/yaml.v2"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/tools/clientcmd"
 )
@@ -18,6 +18,10 @@ import (
 // type Cluster struct {
 // 	CS *kubernetes.Clientset
 // }
+
+//discovery
+//informers
+//dynamic
 
 func main() {
 	// Create kubernetes client
@@ -66,7 +70,26 @@ func main() {
 
 	fmt.Printf("Server Groups: %d\n", len(sg))
 	fmt.Printf("Server Resources: %d\n", len(sr))
-	// fmt.Println(yaml.Marshal(sr))
+
+	nodes, err := cs.CoreV1().Nodes().List(metav1.ListOptions{})
+	if err != nil {
+		log.Fatalln(err)
+	}
+	fmt.Println(nodes)
+
+	// yaml.Marshal(&nodes)
+	// fmt.Println(
+	// )
+	// if err != nil {
+	// 	log.Fatalln(err)
+	// }
+
+	output, err = yaml.Marshal(&nodes)
+	fmt.Println(string(output))
+	if err != nil {
+		log.Fatalln(err)
+
+	}
 
 	// sg, err := cs.Discovery().ServerGroups()
 	// if err != nil {
