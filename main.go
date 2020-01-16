@@ -76,7 +76,6 @@ func main() {
 		log.Fatalln(err)
 	}
 	fmt.Println(nodes)
-
 	// yaml.Marshal(&nodes)
 	// fmt.Println(
 	// )
@@ -91,6 +90,23 @@ func main() {
 
 	}
 
+	for i := range nodes.Items {
+		// niy, err := yaml.Marshal(&nodes.Items[i].Status.Addresses)
+		// niy, err := yaml.Marshal(&nodes.Items[i].Status.NodeInfo)
+		// niy, err := yaml.Marshal(&nodes.Items[i].Status.Capacity)
+		// niy, err := yaml.Marshal(&nodes.Items[i].Spec)
+		niy := nodes.Items[i].Status.Allocatable.Cpu
+		if err != nil {
+			log.Fatalln(err)
+		}
+		fmt.
+			Printf(
+				"\n-------------------------------------------\n%d:\n%d",
+				i+1,
+				niy,
+			)
+
+	}
 	// sg, err := cs.Discovery().ServerGroups()
 	// if err != nil {
 	// 	log.Fatal(err)
